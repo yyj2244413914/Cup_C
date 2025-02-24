@@ -50,7 +50,7 @@ int main() {
     {
         for(int j=0;j<n;j++)
         {
-            if(srr[i][j]=j+1)
+            if(srr[i][j]==j+1)
             {
                for(int k=0;k<n;k++)
                srr[i][k]=0; 
