@@ -1,40 +1,3 @@
-/*题目 1：身份证号码验证
-身份证号码的验证规则主要包括以下几个方面：
-1.号码长度
-18 位身份证号码由 17 位数字本体码和 1 位校验码组成。
-2.数字编码规则
-（
-1）地址码（前 6 位）
-第 1、2 位表示省级行政区，如 11 表示北京市，61 表示陕西省。
-第 3、4 位表示地级行政区，如 01 表示西安市。
-第 5、6 位表示县级行政区，如 02 表示新城区。
-（
-2）出生日期码（第 7-14 位）
-表示持证人出生的年、月、日，其中年用 4 位数字表示，月、日各用 2 位数字表示，如
-19900101 表示 1990 年 1 月 1 日出生。
-（
-3）顺序码（第 15-17 位）
-对同年、同月、同日出生的人员编定的顺序号。其中第 17 位奇数分给男性，偶数分给女性。
-（
-4）校验码（第 18 位）
-是根据前面 17 位数字码，按照 ISO 7064:1983.MOD 11-2 校验码计算出来的检验码。计算方法
-如下：
-将身份证号码前 17 位数分别乘以不同的系数。从第一位到第十七位的系数分别为：7、9、10、
-5、8、4、2、1、6、3、7、9、10、5、8、4、2。将这 17 位数字和系数相乘的结果相加。用加出来
-和除以 11，看余数是多少。余数只可能有 0、1、2、3、4、5、6、7、8、9、10 这 11 个数字。其分
-别对应的最后一位身份证的号码为 1、0、X、9、8、7、6、5、4、3、2。
-编写一个程序，通过命令行参数方式输入 1 个 18 位的身份证号码，输出该身份证号码是
-否是正确的号码。
-注意：
-1. 18 位身份证号码并不全是数字；
-2. 18 位身份证号码如果全部是数字的话，其大小已经使得数字的表示范围超过了
-int 类型能够
-表示的大小了；
-3. 18 位身份证号码的验证除了最后一位的校验之外，还有出生年月日合法性的校验，那么就需
-要在真正执行计算之前对用户输入的参数合法性进行考虑。如果程序的健壮性足够好，就必须
-能处理这些不合法的输入。（地区编码的合法性不用检验）*/
-
-
 //使用 Java 的 Scanner 类来获取用户输入。
 //使用Java的time包来检查身份证号第 7-14 位是否为合法的出生日期。
 import java.time.LocalDate;
@@ -62,10 +25,14 @@ public class IDcardcheck {
             System.out.println();
             // 将前十七位以数组形式保存。
             int[] numbers = new int[17];
-            for (int i = 0; i < 17; i++) {
+            try {
+                for (int i = 0; i < 17; i++) {
                 numbers[i] = Character.getNumericValue(charArray[i]);
             }
-            //打印前十七位。
+        }catch (NumberFormatException e) {
+            throw new IllegalArgumentException("身份证号前 17 位必须全部为数字。");
+        }
+        //打印前十七位。
             System.out.println("身份证号前 17 位保存为 int 数组，数组内容如下：");
             for (int num : numbers) {
                 System.out.print(num + " ");
@@ -75,15 +42,13 @@ public class IDcardcheck {
             if (checkBirthday(input)) {
                 System.out.println("身份证号第 7-14 位对应的出生日期合法。");
             } else {
-                System.out.println("身份证号第 7-14 位对应的出生日期不合法。");
-                return;
+                throw new IllegalArgumentException("身份证号第 7-14 位对应的出生日期不合法。");
             }
             // 检验身份证号第 18 位是否为合法的校验码
             if (check(checkcheck(numbers), charArray)) {
                 System.out.println("身份证第十八位校验码合法。");
             } else {
-                System.out.println("身份证号第十八位校验码不合法。");
-                return;
+                throw new IllegalArgumentException("身份证第十八位校验码不合法。");
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
