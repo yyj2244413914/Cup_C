@@ -18,6 +18,7 @@ public static double[ ][ ] multiply(double[ ][ ] m1, double[ ][ ] m2);
 要求： 
 除了实现Matrix Library之外，还需要编写一个测试程序，用来验证Matrix中实现的各个函数的
 正确性。*/
+
 //(1)定义矩阵打印方法
 //输出格式自行决定，但一定要整齐美观。
 public class Matrix { 
@@ -123,7 +124,7 @@ public static int[ ][ ] multiply(int[ ][ ] m1, int[ ][ ] m2){
     int i=0,j=0,k=0;
     for(i=0;i<m1.length;i++){
         for(j=0;j<m2[0].length;j++){
-            for(k=0;k<m1[0].length;k++){
+            for(k=0;(k<m1[0].length)&&(k<m2.length);k++){
                 m3[i][j]+=m1[i][k]*m2[k][j]; 
             }
         } 
@@ -135,11 +136,24 @@ public static double[ ][ ] multiply(double[ ][ ] m1, double[ ][ ] m2){
     int i=0,j=0,k=0;
     for(i=0;i<m1.length;i++){
         for(j=0;j<m2[0].length;j++){
-            for(k=0;k<m1[0].length;k++){
+            for(k=0;(k<m1[0].length)&&(k<m2.length);k++){
                 m3[i][j]+=m1[i][k]*m2[k][j]; 
             }
         } 
     }
     return m3;
 };
+//(6)测试程序
+public static void main(String[] args) {
+    int[][] m1={{1,2,3},{4,5,6}};
+    int[][] m2={{1,2,3},{4,5,6}};
+    int[][] m3=add(m1,m2);
+    print(m3);
+    int[][] m4=subtract(m1,m2);
+    print(m4);
+    int[][] m5=multiply(m1,m2);
+    print(m5);
+    int[][] m6={{1,2},{3,4},{5,6}};//测试错误情况
+    int[][] m7=add(m1,m6);//预期输出：维数不一致，无法相加
+}
 }
