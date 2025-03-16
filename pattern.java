@@ -45,6 +45,7 @@ public class pattern  {
                     }
 
                 for(j=0;j<(n-1)/2;j++){
+                    System.out.print("  ");
                     for(k=0;k<j;k++){
                             System.out.print("  ");
                         }
