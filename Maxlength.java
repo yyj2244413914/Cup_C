@@ -25,18 +25,22 @@ public class Maxlength {
          2、检验字符串长度是否符合要求。
          3、检验n的取值是否正确。
          */
-        try {
-            // 从文件中读取输入
+        /*主程序以try-catch为框架，以实现以下几个目的：
+         1、检验文件名是否正确。
+         2、检验字符串长度是否符合要求。
+         3、检验n的取值是否正确。
+         */
+          // 从文件中读取输入
             //先从控制台输入文件名，并存储在字符串变量中。
             //再通过字符串变量读取对应文件里的内容。
-            Scanner scannerfile = new Scanner(System.in);
-            System.out.println("请输入文件名：");
-            String filename = scannerfile.nextLine();
-            scannerfile.close();
-            File file = new File("filename");
-            Scanner fileScanner = new Scanner(file);
-            String input = fileScanner.nextLine();
-            fileScanner.close();
+            try(Scanner consoleScanner = new Scanner(System.in)) {
+                // 从控制台获取文件名
+                System.out.println("请输入文件名：");
+                String filename = consoleScanner.nextLine();
+                try (Scanner fileScanner = new Scanner(new File(filename))) {
+                    // 从文件读取数字序列
+                    String input = fileScanner.nextLine();
+                    numbers = saveToIntArray(input);
             //自定义方法实现从string类型到int类型的转化。
             numbers = saveToIntArray(input);
             if (numbers.length < 1 || numbers.length > 1000) {
@@ -60,7 +64,7 @@ public class Maxlength {
         } 
         /*利用Stringbuilder方法对得到的结果（数组）做操作，包括：
           1、在每个数字之间添加“*”号。
-          2、在最后一个数前添加“+”号。*/
+          2、在最后一个数前添加“=”号。*/
         int[] maxProduct = findMaxProduct(numbers, n);
         StringBuilder productStr = new StringBuilder();
         for (int i = 0; i < n; i++) {
@@ -73,7 +77,7 @@ public class Maxlength {
         //打印完整的乘积形式结果。
         System.out.println("指定长度为" + n + "的最大子序列乘积值为：" + productStr.toString());
     }
-
+    }
     public static int[] saveToIntArray(String input) {
         int[] numbers = new int[input.length()];
         for (int i = 0; i < input.length(); i++) {
@@ -106,3 +110,4 @@ public class Maxlength {
         return result;
     }
 }
+
